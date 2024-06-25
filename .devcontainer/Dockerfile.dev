@@ -1,0 +1,31 @@
+FROM node:21 AS base
+
+WORKDIR /workspace
+
+# Install npm and set configurations
+RUN npm set registry https://registry.npmjs.org/ && \
+    npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000
+
+# Copy package.json and package-lock.json first
+COPY package.json package-lock.json ./
+
+# Install dependencies using npm
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Add vscode user and set permissions
+RUN useradd -ms /bin/bash vscode && chown -R vscode:vscode /workspace
+
+# Add node_modules/.bin to PATH
+ENV PATH /workspace/node_modules/.bin:$PATH
+
+USER vscode
+
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "run", "dev"]

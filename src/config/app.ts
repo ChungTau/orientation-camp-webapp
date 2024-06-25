@@ -1,0 +1,1 @@
+export const APP_TITLE = "計科迎新";

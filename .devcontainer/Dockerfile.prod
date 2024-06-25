@@ -1,0 +1,60 @@
+FROM node:21-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /workspace
+
+RUN npm config set fetch-retries 5 \
+    && npm config set fetch-retry-mintimeout 600000 \
+    && npm config set fetch-retry-maxtimeout 1200000 \
+    && npm config set fetch-timeout 1800000
+
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+FROM base AS builder
+WORKDIR /workspace
+COPY --from=deps /workspace/node_modules ./node_modules
+COPY . .
+
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+FROM base AS runner
+WORKDIR /workspace
+
+ENV NODE_ENV production
+ENV NODE_OPTIONS '--max-http-header-size=12800000'
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 vscode
+
+COPY --from=builder /workspace/public ./public
+RUN mkdir .next && chown vscode:nodejs .next
+
+COPY --from=builder --chown=vscode:nodejs /workspace/.next/standalone ./
+COPY --from=builder --chown=vscode:nodejs /workspace/.next/static ./.next/static
+COPY --from=builder --chown=vscode:nodejs /workspace/prisma ./prisma
+COPY --from=builder --chown=vscode:nodejs /workspace/node_modules ./node_modules
+COPY --from=builder --chown=vscode:nodejs /workspace/migrate-and-start.sh .
+COPY --from=builder --chown=vscode:nodejs /workspace/wait-for.sh .
+
+USER vscode
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["pnpm", "start"]
