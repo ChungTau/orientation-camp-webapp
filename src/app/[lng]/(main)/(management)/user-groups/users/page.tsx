@@ -1,12 +1,13 @@
 import ContentLayout from "@/components/content-layout/client";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function ManageUsersPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="ug-users">
-                        <div>
-                
-                </div>
-        </ContentLayout>
-    );
-}
+const ManageUsersPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="ug-users">
+      <div></div>
+    </ContentLayout>
+  );
+};
+
+export default ManageUsersPage;

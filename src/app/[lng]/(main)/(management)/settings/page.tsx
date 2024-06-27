@@ -1,14 +1,16 @@
-
 import ContentLayout from "@/components/content-layout/client";
 import SettingsForm from "@/components/settings-form";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function SettingsPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="settings">
-            <div>
+const SettingsPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="settings">
+      <div>
         <SettingsForm />
       </div>
-        </ContentLayout>
-    );
-}
+    </ContentLayout>
+  );
+};
+
+export default SettingsPage;

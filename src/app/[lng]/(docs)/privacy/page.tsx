@@ -1,9 +1,12 @@
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function Privacy({params:{lng}}:PageProps) {
+const Privacy = ({params}:PageProps<LocaleProps>) => {
     return(
         <div>
             Privacy
         </div>
     );
 }
+
+export default Privacy;

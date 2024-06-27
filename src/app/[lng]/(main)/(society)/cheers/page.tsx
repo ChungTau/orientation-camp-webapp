@@ -1,12 +1,13 @@
 import ContentLayout from "@/components/content-layout/client";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function CheersPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="cheers">
-            <div>
-                
-                </div>
-        </ContentLayout>
-    );
-}
+const CheersPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="cheers">
+      <div className="flex w-full shadow-md overflow-y-auto py-8 scrollbar-thin scrollbar-thumb-transparent xl:flex-1 bg-white rounded-md"></div>
+    </ContentLayout>
+  );
+};
+
+export default CheersPage;

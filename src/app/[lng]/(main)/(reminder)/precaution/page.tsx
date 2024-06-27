@@ -1,12 +1,13 @@
 import ContentLayout from "@/components/content-layout/client";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function PrecautionPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="precaution">
-                        <div>
-                
-                </div>
-        </ContentLayout>
-    );
-}
+const PrecautionPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="precaution">
+      <div></div>
+    </ContentLayout>
+  );
+};
+
+export default PrecautionPage;

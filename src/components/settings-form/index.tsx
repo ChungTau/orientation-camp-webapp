@@ -42,24 +42,7 @@ const SettingsForm = () => {
         <Input id="venue" {...register("venue")} />
         {errors.venue && <p className="text-red-600">{errors.venue.message}</p>}
       </div>
-      <div className="mb-4">
-        <Label htmlFor="dateRange">Date Range</Label>
-        <Controller
-          name="dateRange"
-          control={control}
-          render={({ field }) => (
-            <DatePickerWithRange
-              date={field.value}
-              onChange={field.onChange}
-            />
-          )}
-        />
-        {errors.dateRange && (
-          <p className="text-red-600">
-            {errors.dateRange.start?.message || errors.dateRange.end?.message}
-          </p>
-        )}
-      </div>
+      
       <div className="mb-4">
         <Label htmlFor="cheers">Cheers</Label>
         <Input id="cheers" {...register("cheers")} />

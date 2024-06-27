@@ -1,12 +1,13 @@
 import ContentLayout from "@/components/content-layout/client";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function CampfireStepsPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="campfire-steps">
-            <div>
-                
-                </div>
-        </ContentLayout>
-    );
-}
+const CampfireStepsPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="campfire-steps">
+      <div></div>
+    </ContentLayout>
+  );
+};
+
+export default CampfireStepsPage;

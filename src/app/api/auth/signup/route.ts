@@ -24,7 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    // Create a new user in PocketBase
     const newUser = await pocketbase.collection('users').create({
       username,
       email,

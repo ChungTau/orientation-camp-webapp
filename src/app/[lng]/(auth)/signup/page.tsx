@@ -6,13 +6,13 @@ import { UserSignUpForm } from "@/components/user-signup-form"
 import { Tent } from "lucide-react"
 import { LocaleLink } from "@/components/localeLink"
 import { PageProps } from "@/types/pageProps"
+import { LocaleProps } from "@/types/localeProps"
 
 export const metadata = {
   title: "Create an account",
   description: "Create an account to get started.",
 }
-
-export default function RegisterPage({params:{lng}}:PageProps) {
+const SignUpPage = ({params}:PageProps<LocaleProps>) => {
   return (
     <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <LocaleLink href={'/signin'} className={cn(
@@ -33,7 +33,7 @@ export default function RegisterPage({params:{lng}}:PageProps) {
               Enter your email below to create your account
             </p>
           </div>
-          <UserSignUpForm lng={lng} />
+          <UserSignUpForm lng={params.lng} />
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link
@@ -56,3 +56,5 @@ export default function RegisterPage({params:{lng}}:PageProps) {
     </div>
   )
 }
+
+export default SignUpPage;

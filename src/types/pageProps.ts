@@ -1,3 +1,1 @@
-import { LocaleProps } from "./localeProps";
-
-export type PageProps = { params: LocaleProps };
+export type PageProps<T> = { params: T};

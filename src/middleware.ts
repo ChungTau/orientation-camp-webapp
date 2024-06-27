@@ -27,6 +27,9 @@ export async function middleware(req: NextRequest) {
     lng = fallbackLng;
   }
 
+  // Strict locale regex matching
+  const validLocaleRegex = /^\/(en|zh-Hant)(\/|$)/;
+
   // Redirect authenticated users away from sign-in and sign-up pages
   if (token && (pathname.startsWith(`/${lng}/signin`) || pathname.startsWith(`/${lng}/signup`))) {
     return NextResponse.redirect(new URL(`/${lng}`, req.url)); // Redirect to home or any other authenticated page
@@ -41,11 +44,8 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Redirect if language in path is not supported
-  if (
-    !languages.some((loc) => pathname.startsWith(`/${loc}`)) &&
-    !pathname.startsWith("/_next")
-  ) {
+  // Validate if the path has a valid locale
+  if (!validLocaleRegex.test(pathname) && !pathname.startsWith("/_next")) {
     return NextResponse.redirect(new URL(`/${lng}${pathname}`, req.url));
   }
 
@@ -53,7 +53,7 @@ export async function middleware(req: NextRequest) {
   if (req.headers.has("referer")) {
     const refererUrl = new URL(req.headers.get("referer")!);
     const lngInReferer = languages.find((l) =>
-      refererUrl.pathname.startsWith(`/${l}`)
+      refererUrl.pathname.startsWith(`/${l}/`)
     );
     const response = NextResponse.next();
     if (lngInReferer) {

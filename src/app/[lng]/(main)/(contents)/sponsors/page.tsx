@@ -1,12 +1,13 @@
 import ContentLayout from "@/components/content-layout/client";
+import { LocaleProps } from "@/types/localeProps";
 import { PageProps } from "@/types/pageProps";
 
-export default function SponsorsPage({params:{lng}}:PageProps) {
-    return(
-        <ContentLayout lng={lng} title="sponsors">
-                        <div>
-                
-                </div>
-        </ContentLayout>
-    );
-}
+const SponsorsPage = ({ params }: PageProps<LocaleProps>) => {
+  return (
+    <ContentLayout lng={params.lng} title="sponsors">
+      <div></div>
+    </ContentLayout>
+  );
+};
+
+export default SponsorsPage;

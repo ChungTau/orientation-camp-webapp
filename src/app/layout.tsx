@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { languages } from "@/lib/i18n/settings";
 import { LayoutProps } from "@/types/layoutProps";
+import { ThemeProvider } from "next-themes";
+import { cn } from "@/lib/utils";
+import { darker_grotesque } from "@/lib/font";
 
 export const metadata: Metadata = {
   title: "OCamp App",
@@ -9,16 +12,30 @@ export const metadata: Metadata = {
 };
 
 export async function generateStaticParams() {
-  return languages.map((lng) => ({lng}));
+  return languages.map((lng) => ({ lng }));
 }
 
-export default function RootLayout({children, params: {
-  lng
-}} : LayoutProps) {
+const RootLayout = ({ children, params }: LayoutProps) => {
   return (
-      <html lang={lng}
-       suppressHydrationWarning>
+    <html lang={params.lng} suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className={cn(
+          `min-h-screen bg-white text-zinc-800 overflow-y-hidden dark:bg-zinc-800 dark:text-white ${darker_grotesque.className} antialiased overflow-y-hidden`,
+          darker_grotesque.variable
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
           {children}
-      </html>
+        </ThemeProvider>
+      </body>
+    </html>
   );
-}
+};
+
+export default RootLayout;

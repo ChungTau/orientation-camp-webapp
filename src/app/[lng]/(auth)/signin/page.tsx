@@ -5,13 +5,14 @@ import { Metadata } from "next"
 import { Tent } from "lucide-react"
 import { LocaleLink } from "@/components/localeLink"
 import { PageProps } from "@/types/pageProps"
+import { LocaleProps } from "@/types/localeProps"
 
 export const metadata: Metadata = {
     title: "Login",
     description: "Login to your account",
   }
 
-export default function SignInPage({params:{lng}}:PageProps) {
+const SignInPage = ({params}:PageProps<LocaleProps>) => {
   return (
     <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <LocaleLink href={'/signup'} className={cn(
@@ -32,9 +33,11 @@ export default function SignInPage({params:{lng}}:PageProps) {
                 Enter your email to sign in to your account
             </p>
           </div>
-          <UserSignInForm lng={lng}/>
+          <UserSignInForm lng={params.lng}/>
         </div>
       </div>
     </div>
   )
 }
+
+export default SignInPage;
